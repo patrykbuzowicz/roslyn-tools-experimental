@@ -6,12 +6,26 @@ namespace Roslyn
 {
     public class ExtractClassesWalker : CSharpSyntaxWalker
     {
-        public List<ClassDeclarationSyntax> Classes { get; } = new List<ClassDeclarationSyntax>();
+        public List<(MemberDeclarationSyntax Type, string Name)> Types { get; } = new List<(MemberDeclarationSyntax Type, string Name)>();
 
         public override void VisitClassDeclaration(ClassDeclarationSyntax node)
         {
-            Classes.Add(node);
-            base.VisitClassDeclaration(node);
+            Types.Add((Type: node, Name: node.Identifier.ToString()));
+        }
+
+        public override void VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
+        {
+            Types.Add((Type: node, Name: node.Identifier.ToString()));
+        }
+
+        public override void VisitEnumDeclaration(EnumDeclarationSyntax node)
+        {
+            Types.Add((Type: node, Name: node.Identifier.ToString()));
+        }
+
+        public override void VisitDelegateDeclaration(DelegateDeclarationSyntax node)
+        {
+            Types.Add((Type: node, Name: node.Identifier.ToString()));
         }
     }
 }
